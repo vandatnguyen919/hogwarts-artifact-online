@@ -13,12 +13,10 @@ public class ArtifactService {
 
     private final ArtifactRepository artifactRepository;
 
-    private final IdWorker id;
     private final IdWorker idWorker;
 
-    public ArtifactService(ArtifactRepository artifactRepository, IdWorker id, IdWorker idWorker) {
+    public ArtifactService(ArtifactRepository artifactRepository, IdWorker idWorker) {
         this.artifactRepository = artifactRepository;
-        this.id = id;
         this.idWorker = idWorker;
     }
 
