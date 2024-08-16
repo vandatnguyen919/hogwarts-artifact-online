@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @DisplayName("Integration tests for User API endpoints")
 @Tag("integration")
-public class UserControllerIntegrationTest {
+class HogwartsUserControllerIntegrationTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -77,10 +77,10 @@ public class UserControllerIntegrationTest {
     @Test
     @DisplayName("Check findUserById with non-existent id (GET)")
     void testFindUserByIdNotFound() throws Exception {
-        this.mockMvc.perform(get(this.baseUrl + "/users/10").accept(MediaType.APPLICATION_JSON).header(HttpHeaders.AUTHORIZATION, this.token))
+        this.mockMvc.perform(get(this.baseUrl + "/users/5").accept(MediaType.APPLICATION_JSON).header(HttpHeaders.AUTHORIZATION, this.token))
                 .andExpect(jsonPath("$.flag").value(false))
                 .andExpect(jsonPath("$.code").value(StatusCode.NOT_FOUND))
-                .andExpect(jsonPath("$.message").value("Could not find user with Id 10 :("))
+                .andExpect(jsonPath("$.message").value("Could not find user with Id 5 :("))
                 .andExpect(jsonPath("$.data").isEmpty());
     }
 
