@@ -6,7 +6,6 @@ import edu.tcu.cs.hogwartsartifactsonline.hogwartsuser.dto.UserDto;
 import edu.tcu.cs.hogwartsartifactsonline.system.Result;
 import edu.tcu.cs.hogwartsartifactsonline.system.StatusCode;
 import jakarta.validation.Valid;
-import org.apache.catalina.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
