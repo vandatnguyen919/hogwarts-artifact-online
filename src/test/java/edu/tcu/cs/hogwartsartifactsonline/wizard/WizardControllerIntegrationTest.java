@@ -183,7 +183,6 @@ public class WizardControllerIntegrationTest {
     }
 
     @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     @DisplayName("Check deleteWizard with valid input (DELETE)")
     void testDeleteWizardSuccess() throws Exception {
         this.mockMvc.perform(delete(this.baseUrl + "/wizards/3").accept(MediaType.APPLICATION_JSON).header(HttpHeaders.AUTHORIZATION, this.token))
