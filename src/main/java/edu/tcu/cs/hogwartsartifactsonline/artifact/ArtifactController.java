@@ -42,7 +42,7 @@ public class ArtifactController {
     @GetMapping
     public Result findAllArtifacts() {
         List<Artifact> foundArtifacts = this.artifactService.findAll();
-        // Convert foundArtifacts to a list of artifactDFtos
+        // Convert foundArtifacts to a list of artifactDtos
         List<ArtifactDto> artifactDtos = foundArtifacts.stream().map(this.artifactToArtifactDtoConverter::convert).collect(Collectors.toList());
         return new Result(true, StatusCode.SUCCESS, "Find All Success", artifactDtos);
     }

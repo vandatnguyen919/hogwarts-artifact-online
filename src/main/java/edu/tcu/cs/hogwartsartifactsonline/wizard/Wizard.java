@@ -3,7 +3,6 @@ package edu.tcu.cs.hogwartsartifactsonline.wizard;
 import edu.tcu.cs.hogwartsartifactsonline.artifact.Artifact;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Generated;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;

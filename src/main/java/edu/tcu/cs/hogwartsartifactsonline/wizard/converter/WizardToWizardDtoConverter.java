@@ -9,10 +9,9 @@ import org.springframework.stereotype.Component;
 public class WizardToWizardDtoConverter implements Converter<Wizard, WizardDto> {
     @Override
     public WizardDto convert(Wizard source) {
-        WizardDto wizardDto = new WizardDto(
+        return new WizardDto(
                 source.getId(),
                 source.getName(),
                 source.getNumberOfArtifacts());
-        return wizardDto;
     }
 }
