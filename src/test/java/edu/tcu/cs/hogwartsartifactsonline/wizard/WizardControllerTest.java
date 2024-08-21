@@ -1,6 +1,5 @@
 package edu.tcu.cs.hogwartsartifactsonline.wizard;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.tcu.cs.hogwartsartifactsonline.artifact.Artifact;
 import edu.tcu.cs.hogwartsartifactsonline.system.StatusCode;
@@ -124,7 +123,7 @@ class WizardControllerTest {
                 .andExpect(jsonPath("$.message").value("Find One Success"))
                 .andExpect(jsonPath("$.data.id").value(wizards.get(0).getId()))
                 .andExpect(jsonPath("$.data.name").value(wizards.get(0).getName()))
-                .andExpect(jsonPath("$.data.numberOfArtifacts").value(wizards.get(0).getNumberOfArtifacts()));;
+                .andExpect(jsonPath("$.data.numberOfArtifacts").value(wizards.get(0).getNumberOfArtifacts()));
     }
 
     @Test

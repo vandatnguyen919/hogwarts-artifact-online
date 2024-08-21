@@ -12,7 +12,7 @@ on:
 # one workflow has one or more jobs
 jobs:
   build:
-    # github provides several VMs to run the workflow
+    # GitHub provides several VMs to run the workflow
     runs-on: ubuntu-latest # Ubuntu Linux Runner
 #    run-on: windows-latest
 #    run-on: macos-latest
