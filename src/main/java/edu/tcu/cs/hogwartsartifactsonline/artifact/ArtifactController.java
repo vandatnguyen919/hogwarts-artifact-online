@@ -8,6 +8,8 @@ import edu.tcu.cs.hogwartsartifactsonline.system.Result;
 import edu.tcu.cs.hogwartsartifactsonline.system.StatusCode;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,11 +43,11 @@ public class ArtifactController {
     }
 
     @GetMapping
-    public Result findAllArtifacts() {
-        List<Artifact> foundArtifacts = this.artifactService.findAll();
-        // Convert foundArtifacts to a list of artifactDtos
-        List<ArtifactDto> artifactDtos = foundArtifacts.stream().map(this.artifactToArtifactDtoConverter::convert).collect(Collectors.toList());
-        return new Result(true, StatusCode.SUCCESS, "Find All Success", artifactDtos);
+    public Result findAllArtifacts(Pageable pageable) { // Using Pageable directly in the controller method signature, let Spring handles the instantiation and population of PageRequest object based on the request parameters. It is a common and recommended approach when implement pagination in Spring Boot
+        Page<Artifact> artifactPage = this.artifactService.findAll(pageable);
+        // Convert artifactPage to a page of artifactDtos
+        Page<ArtifactDto> artifactDtoPage = artifactPage.map(this.artifactToArtifactDtoConverter::convert);
+        return new Result(true, StatusCode.SUCCESS, "Find All Success", artifactDtoPage);
     }
 
     @PostMapping
