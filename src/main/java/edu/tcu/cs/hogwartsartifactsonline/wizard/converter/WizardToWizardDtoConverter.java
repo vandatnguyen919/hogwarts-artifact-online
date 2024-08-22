@@ -12,6 +12,6 @@ public class WizardToWizardDtoConverter implements Converter<Wizard, WizardDto> 
         return new WizardDto(
                 source.getId(),
                 source.getName(),
-                source.getNumberOfArtifacts());
+                source.getNumberOfArtifacts()); // Principle of least knowledge (Law of Demeter), instead of source.artifacts.size()
     }
 }

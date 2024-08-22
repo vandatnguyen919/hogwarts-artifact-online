@@ -1,8 +1,11 @@
 package edu.tcu.cs.hogwartsartifactsonline.system.exception;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.tcu.cs.hogwartsartifactsonline.system.Result;
 import edu.tcu.cs.hogwartsartifactsonline.system.StatusCode;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -15,6 +18,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -73,6 +80,42 @@ public class ExceptionHandlerAdvice {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     Result handleAccessDeniedException(AccessDeniedException ex) {
         return new Result(false, StatusCode.FORBIDDEN, "No permission.", ex.getMessage());
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    Result handleNoHandlerFoundException(NoHandlerFoundException ex) {
+        return new Result(false, StatusCode.NOT_FOUND, "This API endpoint is not found.", ex.getMessage());
+    }
+
+    @ExceptionHandler({
+            HttpClientErrorException.class,
+            HttpServerErrorException.class
+    })
+    ResponseEntity<Result> handleRestClientException(HttpStatusCodeException ex) throws JsonProcessingException {
+
+        // Extract the JSON part from the data string by splitting and trimming
+        String jsonPart = ex.getMessage().split(": ", 2)[1].trim();
+
+        // Remove the extra backslashes and quotes from the JSON part
+        jsonPart = jsonPart.substring(1, jsonPart.length() - 1).replace("\\\"", "\"");
+
+        // Create an ObjectMapper instance
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        // Convert JSON string to Map
+        Map<String, String> map = objectMapper.readValue(jsonPart, Map.class);
+
+        // Access the error message
+        String errorMessage = map.get("error");
+
+        return new ResponseEntity<>(
+          new Result(false,
+                  ex.getStatusCode().value(),
+                  "A rest client error occurs, see data for details.",
+                  errorMessage + "."),
+                ex.getStatusCode()
+        );
     }
 
     @ExceptionHandler(Exception.class)
