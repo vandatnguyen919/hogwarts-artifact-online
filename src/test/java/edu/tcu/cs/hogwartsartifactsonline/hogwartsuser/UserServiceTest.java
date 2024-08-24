@@ -8,6 +8,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -143,32 +146,78 @@ class UserServiceTest {
     }
 
     @Test
-    void testUpdateSuccess() {
+    void testUpdateByAdminSuccess() {
         // Given
         HogwartsUser u = new HogwartsUser();
-        u.setId(1);
-        u.setUsername("john");
-        u.setPassword("123456");
-        u.setEnabled(true);
-        u.setRoles("admin user");
+        u.setId(2);
+        u.setUsername("eric");
+        u.setPassword("654321");
+        u.setEnabled(false);
+        u.setRoles("user");
 
         HogwartsUser update = new HogwartsUser();
-        update.setUsername("john-update");
+        update.setUsername("eric - update");
         update.setEnabled(true);
         update.setRoles("admin user");
 
-        given(userRepository.findById(1)).willReturn(Optional.of(u));
+        given(userRepository.findById(2)).willReturn(Optional.of(u));
         given(userRepository.save(u)).willReturn(u);
 
+        HogwartsUser hogwartsUser = new HogwartsUser();
+        hogwartsUser.setRoles("admin");
+        MyUserPrincipal myUserPrincipal = new MyUserPrincipal(hogwartsUser);
+
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(myUserPrincipal, null, myUserPrincipal.getAuthorities()));
+        SecurityContextHolder.setContext(securityContext);
+
         // When
-        HogwartsUser updatedUser = userService.update(1, update);
+        HogwartsUser updatedUser = userService.update(2, update);
 
         // Then
-        assertThat(updatedUser.getId()).isEqualTo(1);
-        assertThat(updatedUser.getUsername()).isEqualTo("john-update");
-        assertThat(updatedUser.isEnabled()).isEqualTo(true);
-        assertThat(updatedUser.getRoles()).isEqualTo("admin user");
-        verify(userRepository, times(1)).findById(1);
+        assertThat(updatedUser.getId()).isEqualTo(2);
+        assertThat(updatedUser.getUsername()).isEqualTo(update.getUsername());
+        assertThat(updatedUser.isEnabled()).isEqualTo(update.isEnabled());
+        assertThat(updatedUser.getRoles()).isEqualTo(update.getRoles());
+        verify(userRepository, times(1)).findById(2);
+        verify(userRepository, times(1)).save(u);
+    }
+
+    @Test
+    void testUpdateByUserSuccess() {
+        // Given
+        HogwartsUser u = new HogwartsUser();
+        u.setId(2);
+        u.setUsername("eric");
+        u.setPassword("654321");
+        u.setEnabled(false);
+        u.setRoles("user");
+
+        HogwartsUser update = new HogwartsUser();
+        update.setUsername("eric - update");
+        update.setEnabled(false);
+        update.setRoles("user");
+
+        given(userRepository.findById(2)).willReturn(Optional.of(u));
+        given(userRepository.save(u)).willReturn(u);
+
+        HogwartsUser hogwartsUser = new HogwartsUser();
+        hogwartsUser.setRoles("user");
+        MyUserPrincipal myUserPrincipal = new MyUserPrincipal(hogwartsUser);
+
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(myUserPrincipal, null, myUserPrincipal.getAuthorities()));
+        SecurityContextHolder.setContext(securityContext);
+
+        // When
+        HogwartsUser updatedUser = userService.update(2, update);
+
+        // Then
+        assertThat(updatedUser.getId()).isEqualTo(2);
+        assertThat(updatedUser.getUsername()).isEqualTo(update.getUsername());
+        assertThat(updatedUser.isEnabled()).isEqualTo(update.isEnabled());
+        assertThat(updatedUser.getRoles()).isEqualTo(update.getRoles());
+        verify(userRepository, times(1)).findById(2);
         verify(userRepository, times(1)).save(u);
     }
 
