@@ -118,6 +118,12 @@ public class ExceptionHandlerAdvice {
         );
     }
 
+    @ExceptionHandler(CustomBlobStorageException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    Result handleCustomBlobStorageException(CustomBlobStorageException ex) {
+        return new Result(false, StatusCode.INTERNAL_SERVER_ERROR, ex.getMessage(), ex.getCause().getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     Result handleOtherException(Exception ex) {
