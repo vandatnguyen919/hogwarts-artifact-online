@@ -2,6 +2,8 @@ package edu.tcu.cs.hogwartsartifactsonline.hogwartsuser;
 
 import edu.tcu.cs.hogwartsartifactsonline.system.exception.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,14 +39,19 @@ public class UserService implements UserDetailsService {
     }
 
     public HogwartsUser update(Integer userId, HogwartsUser user) {
-        return userRepository.findById(userId)
-                .map(oldUser -> {
-                    oldUser.setUsername(user.getUsername());
-                    oldUser.setEnabled(user.isEnabled());
-                    oldUser.setRoles(user.getRoles());
-                    return userRepository.save(oldUser);
-                })
-                .orElseThrow(() -> new ObjectNotFoundException("user", userId));
+        HogwartsUser oldHogwartsUser = userRepository.findById(userId).orElseThrow(() -> new ObjectNotFoundException("user", userId));
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // If the user is not an admin, then the user can only update her username
+        if (authentication.getAuthorities().stream().noneMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_admin"))) {
+            oldHogwartsUser.setUsername(user.getUsername());
+        } else {  // If the user is an admin, then the user can update username, enabled, and roles.
+            oldHogwartsUser.setUsername(user.getUsername());
+            oldHogwartsUser.setEnabled(user.isEnabled());
+            oldHogwartsUser.setRoles(user.getRoles());
+        }
+        return userRepository.save(oldHogwartsUser);
     }
 
     public void delete(Integer userId) {
