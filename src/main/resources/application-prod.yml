@@ -7,7 +7,7 @@ spring:
             endpoint: ${AZURE_KEY_VAULT_ENDPOINT} # environment variable
       storage:
         blob:
-          account-name: ${AZURE_STORAGE_ACCOUNT_NAME}; # environment variable
+          account-name: ${AZURE_STORAGE_ACCOUNT_NAME} # environment variable
   datasource:
     url: ${datasource-url} # secret from Azure Key Vault
     username: ${datasource-username} # secret from Azure Key Vault
