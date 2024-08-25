@@ -14,6 +14,10 @@ spring:
     multipart:
       max-file-size: 2MB
       max-request-size: 20MB
+  data:
+    redis:
+      host: localhost
+      port: 6379
 ai:
   meta-llama:
     endpoint: ${AI_META_LLAMA_ENDPOINT:https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct/v1/chat/completions} # environment variable with a default value

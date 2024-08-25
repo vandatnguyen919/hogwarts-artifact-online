@@ -124,6 +124,12 @@ public class ExceptionHandlerAdvice {
         return new Result(false, StatusCode.INTERNAL_SERVER_ERROR, ex.getMessage(), ex.getCause().getMessage());
     }
 
+    @ExceptionHandler(PasswordChangeIllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    Result handlePasswordChangeIllegalArgumentException(PasswordChangeIllegalArgumentException ex) {
+        return new Result(false, StatusCode.INVALID_ARGUMENT, ex.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     Result handleOtherException(Exception ex) {

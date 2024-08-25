@@ -2,6 +2,7 @@ package edu.tcu.cs.hogwartsartifactsonline.artifact;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.redis.testcontainers.RedisContainer;
 import edu.tcu.cs.hogwartsartifactsonline.system.StatusCode;
 import org.hamcrest.Matchers;
 import org.json.JSONObject;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
@@ -22,6 +24,9 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
+@Testcontainers
 @AutoConfigureMockMvc
 @DisplayName("Integration tests for Artifact API endpoints")
 @Tag("integration")
@@ -48,6 +54,10 @@ public class ArtifactControllerIntegrationTest {
     String baseUrl;
 
     String token;
+
+    @Container
+    @ServiceConnection
+    static RedisContainer redisContainer = new RedisContainer(DockerImageName.parse("redis:6.2.6"));
 
     @BeforeEach
     void setUp() throws Exception {
