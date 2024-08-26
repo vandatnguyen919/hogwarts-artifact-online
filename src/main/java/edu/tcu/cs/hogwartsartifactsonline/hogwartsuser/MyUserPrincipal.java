@@ -8,7 +8,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Arrays;
 import java.util.Collection;
-
+/*
+* This class is applied to Adapter Design Pattern 
+* */
 @AllArgsConstructor
 @Data
 public class MyUserPrincipal implements UserDetails {
