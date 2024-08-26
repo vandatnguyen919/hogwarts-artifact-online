@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
 
+/*
+*  This class is applied to Proxy Design Pattern
+* */
 @Service
 public class RedisCacheClient {
 
