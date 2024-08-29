@@ -145,6 +145,12 @@
             <groupId>com.azure.spring</groupId>
             <artifactId>spring-cloud-azure-starter-data-redis-lettuce</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.firebase/firebase-admin -->
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-admin</artifactId>
+            <version>9.3.0</version>
+        </dependency>
     </dependencies>
 
     <!--The Spring Cloud Azure Bill of Materials (BOM)-->

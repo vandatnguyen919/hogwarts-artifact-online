@@ -10,6 +10,7 @@ import edu.tcu.cs.hogwartsartifactsonline.system.Result;
 import edu.tcu.cs.hogwartsartifactsonline.system.StatusCode;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class ArtifactController {
 
     private final ImageStorageClient imageStorageClient;
 
-    public ArtifactController(ArtifactService artifactService, ArtifactToArtifactDtoConverter artifactToArtifactDtoConverter, ArtifactDtoToArtifactConverter artifactDtoToArtifactConverter, MeterRegistry meterRegistry, ImageStorageClient imageStorageClient) {
+    public ArtifactController(ArtifactService artifactService, ArtifactToArtifactDtoConverter artifactToArtifactDtoConverter, ArtifactDtoToArtifactConverter artifactDtoToArtifactConverter, MeterRegistry meterRegistry, @Qualifier("firebaseImageStorageClient") ImageStorageClient imageStorageClient) {
         this.artifactService = artifactService;
         this.artifactToArtifactDtoConverter = artifactToArtifactDtoConverter;
         this.artifactDtoToArtifactConverter = artifactDtoToArtifactConverter;
