@@ -22,3 +22,6 @@ ai:
   meta-llama:
     endpoint: ${AI_META_LLAMA_ENDPOINT:https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct/v1/chat/completions} # environment variable with a default value
     api-key: ${AI_HUGGING_FACE_API_KEY:YOUR_API_KEY} # environment variable with a default value
+firebase:
+  storage:
+      url: ${FIREBASE_STORAGE_URL:https://firebasestorage.googleapis.com/v0/b/hogwarts-b677f.appspot.com/o}

@@ -6,6 +6,7 @@ import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.models.BlobStorageException;
 import edu.tcu.cs.hogwartsartifactsonline.system.exception.CustomBlobStorageException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +28,7 @@ public class AzureImageStorageClient implements ImageStorageClient {
             BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient(containerName);
 
             // Rename the image file to a unique name
-            String newImageName = UUID.randomUUID() + originalImageName.substring(originalImageName.lastIndexOf("."));
+            String newImageName = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(originalImageName);
 
             // Get the BlobClient object to interact with the specified blob
             BlobClient blobClient = blobContainerClient.getBlobClient(newImageName);
