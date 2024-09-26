@@ -31,8 +31,8 @@ public class FirebaseImageStorageClient implements ImageStorageClient {
 
     private final RestClient.Builder restClientBuilder;
 
-    public FirebaseImageStorageClient(RestClient.Builder restClientBuilde) throws IOException {
-        this.restClientBuilder = restClientBuilde;
+    public FirebaseImageStorageClient(RestClient.Builder restClientBuilder) throws IOException {
+        this.restClientBuilder = restClientBuilder;
 
         // Configure the Firebase Cloud credentials
         FileInputStream serviceAccount = new FileInputStream("./src/main/resources/serviceAccountKey.json");
